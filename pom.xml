@@ -1,0 +1,161 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.du</groupId>
+  <artifactId>kafka-flink-hbase</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <name>kafka-flink-hbase</name>
+  <url>http://maven.apache.org</url>
+
+  <properties>
+  		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	    <scala.version>2.11.11</scala.version>
+	    <scala.compat.version>2.11</scala.compat.version>
+	    <spark.version>2.2.0</spark.version>
+	     <c3p0.version>0.9.1.1</c3p0.version>
+	     <mysql.version>5.1.26</mysql.version>
+	     <fastjson.version>1.1.41</fastjson.version>
+	     <hbase.version>1.2.0</hbase.version>
+	     <flink.version>1.4.2</flink.version>
+  </properties>
+  
+  <repositories>
+<!-- 		指定该项目可以从哪些地方下载依赖包  -->
+		<repository>
+			  <id>aliyun</id>
+			  <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+		</repository>
+		<repository>
+			  <id>cloudera</id>
+			  <url>https://repository.cloudera.com/artifactory/cloudera-repos/</url>
+		</repository>
+		<repository>
+			  <id>jboss</id>
+			  <url>http://repository.jboss.org/nexus/content/groups/public</url>
+		</repository>
+ </repositories>
+
+  <dependencies>
+		<dependency>
+			<groupId>org.apache.flink</groupId>
+			<artifactId>flink-streaming-java_${scala.compat.version}</artifactId>
+			<version>${flink.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.flink</groupId>
+			<artifactId>flink-connector-twitter_${scala.compat.version}</artifactId>
+			<version>${flink.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.flink</groupId>
+			<artifactId>flink-connector-kafka-0.10_${scala.compat.version}</artifactId>
+			<version>${flink.version}</version>
+		</dependency>
+		
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-statebackend-rocksdb_${scala.compat.version}</artifactId>
+            <version>${flink.version}</version>
+        </dependency>
+        
+        <dependency>
+			<groupId>org.apache.flink</groupId>
+			<artifactId>flink-table_${scala.compat.version}</artifactId>
+			<version>${flink.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.flink</groupId>
+			<artifactId>flink-streaming-scala_${scala.compat.version}</artifactId>
+			<version>${flink.version}</version>
+		</dependency>
+		<dependency>
+	        <groupId>org.apache.flink</groupId>
+	        <artifactId>flink-hbase_${scala.compat.version}</artifactId>
+	        <version>${flink.version}</version>
+         </dependency>
+         <dependency>
+			<groupId>org.apache.hadoop</groupId>
+			<artifactId>hadoop-client</artifactId>
+			<version>2.6.0</version>
+		</dependency>
+          <dependency>
+			<groupId>org.apache.hbase</groupId>
+			<artifactId>hbase-server</artifactId>
+			<version>${hbase.version}</version>
+		</dependency>
+		<dependency>
+		      <groupId>org.apache.hbase</groupId>
+		      <artifactId>hbase-common</artifactId>
+		      <version>${hbase.version}</version>
+	    </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-pool2</artifactId>
+            <version>2.4.2</version>
+        </dependency>
+  </dependencies>
+  
+    <build>
+    <sourceDirectory>src/main/java</sourceDirectory>
+    <testSourceDirectory>src/test/java</testSourceDirectory>
+    <plugins>
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <configuration>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+          <archive>
+            <manifest>
+              <mainClass></mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+        <executions>
+          <execution>
+            <id>make-assembly</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>1.2.1</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <executable>java</executable>
+          <includeProjectDependencies>true</includeProjectDependencies>
+          <includePluginDependencies>false</includePluginDependencies>
+          <classpathScope>compile</classpathScope>
+          <mainClass>com.stars</mainClass>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.8</source>
+          <target>1.8</target>
+        </configuration>
+      </plugin>
+
+    </plugins>
+  </build>
+</project>
